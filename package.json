@@ -1,0 +1,24 @@
+{
+  "name": "my-ecs-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/iamads/my-ecs-demo.git"
+  },
+  "author": "ads",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/iamads/my-ecs-demo/issues"
+  },
+  "homepage": "https://gitlab.com/iamads/my-ecs-demo#README"
+}
