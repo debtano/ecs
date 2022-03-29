@@ -1,54 +1,22 @@
-image: docker:19.03.10
-
-services:
-  - docker:dind
-
-variables:
-  REPOSITORY_URL: 213932411534.dkr.ecr.us-west-2.amazonaws.com/gitlab-ecs-app
-  REPOSITORY_BASE: 213932411534.dkr.ecr.us-west-2.amazonaws.com
-  TASK_DEFINITION_NAME:  ecs-demo-task
-  CLUSTER_NAME:  container-demo 
-  SERVICE_NAME: my-demo-ecs
-
-before_script:
-  - apk add --no-cache curl jq python py-pip
-  - pip install awscli
-  - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-  - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-  - aws configure set region $AWS_DEFAULT_REGION
-  - $(aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | docker login --username AWS --password-stdin "${REPOSITORY_BASE}")
-  - IMAGE_TAG="$(echo $CI_COMMIT_SHA | head -c 8)"
-
-stages:
-  - build
-  - deploy
-
-build:
+build-job:
   stage: build
   script:
-    - echo "Building image..."
-    - docker build -t $REPOSITORY_URL:latest .
-    - echo "Tagging image..."
-    - docker tag $REPOSITORY_URL:latest $REPOSITORY_URL:$IMAGE_TAG
-    - echo "Pushing image..."
-    - docker push $REPOSITORY_URL:latest
-    - docker push $REPOSITORY_URL:$IMAGE_TAG
-  only:
-    - master
-  tags:
-    - ecs,ecr
+    - echo "Hello, $GITLAB_USER_LOGIN!"
 
-deploy:
+test-job1:
+  stage: test
+  script:
+    - echo "This job tests something"
+
+test-job2:
+  stage: test
+  script:
+    - echo "This job tests something, but takes more time than test-job1."
+    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
+    - echo "which simulates a test that runs 20 seconds longer than test-job1"
+    - sleep 20
+
+deploy-prod:
   stage: deploy
   script:
-    - echo $REPOSITORY_URL:$IMAGE_TAG
-    - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_DEFINITION_NAME" --region "${AWS_DEFAULT_REGION}")
-    - NEW_CONTAINER_DEFINTIION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$REPOSITORY_URL:$IMAGE_TAG" '.taskDefinition.containerDefinitions[0].image = $IMAGE | .taskDefinition.containerDefinitions[0]')
-    - echo "Registering new container definition..."
-    - aws ecs register-task-definition --region "${AWS_DEFAULT_REGION}" --family "${TASK_DEFINITION_NAME}" --container-definitions "${NEW_CONTAINER_DEFINTIION}"
-    - echo "Updating the service..."
-    - aws ecs update-service --region "${AWS_DEFAULT_REGION}" --cluster "${CLUSTER_NAME}" --service "${SERVICE_NAME}"  --task-definition "${TASK_DEFINITION_NAME}"
-  only:
-    - master
-  tags:
-    - ecs,ecr
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
