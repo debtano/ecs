@@ -1,0 +1,33 @@
+system : http://ec2-34-216-74-31.us-west-2.compute.amazonaws.com
+
+stages:
+  - sync
+  - prepare
+  - build-images
+  - fixtures
+  - lint
+  - test
+  - post-test
+  - review
+  - qa
+  - post-qa
+  - pages
+  - notify
+***************************
+1/ definir "stages" en el file principal
+2/ usar "default" en el file principal
+  dentro de default usar "image" y "tags"
+3/ definir "variables" en el file principal
+https://docs.gitlab.com/ee/ci/yaml/index.html#variables
+4/ definir un "include" en el file principal
+  dentro definir "local" y apuntar a un dir .gitlab/ci/*.gitlab-ci.yml
+  uno por cada stage
+  https://docs.gitlab.com/ee/ci/yaml/index.html#include
+
+Use stages to define stages that contain groups of jobs
+Use stage in a job to configure the job to run in a specific stage.
+https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+
+
+examples : https://docs.gitlab.com/ee/ci/examples/index.html
+big example : https://gitlab.com/gitlab-org/gitlab/-/blob/master/.gitlab-ci.yml
