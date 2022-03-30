@@ -13,6 +13,8 @@ build:
     - docker build -t $REPOSITORY_URL:latest .
     - echo "Tagging image..."
     - docker tag $REPOSITORY_URL:latest $REPOSITORY_URL:$IMAGE_TAG
+    - echo "Verifying credentials"
+    - aws sts get-caller-identity
     - echo "Pushing image..."
     - docker push $REPOSITORY_URL:latest
     - docker push $REPOSITORY_URL:$IMAGE_TAG
