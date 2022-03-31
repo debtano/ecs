@@ -8,6 +8,7 @@ build:
     - aws configure set region $AWS_DEFAULT_REGION
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_BASE
     - IMAGE_TAG="$(echo $CI_COMMIT_SHA | head -c 8)"
+    - echo "Image tag is $IMAGE_TAG"
   script:
     - echo "Building image..."
     - docker build -t $REPOSITORY_URL:latest .
