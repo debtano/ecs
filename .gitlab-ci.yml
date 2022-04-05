@@ -10,11 +10,11 @@ default:
       - ecs,ecr
 
 variables:
-    REPOSITORY_URL: 213932411534.dkr.ecr.us-west-2.amazonaws.com/gitlab-ecs-app
-    REPOSITORY_BASE: 213932411534.dkr.ecr.us-west-2.amazonaws.com
-    TASK_DEFINITION_NAME:  ecs-demo-task
-    CLUSTER_NAME:  container-demo
-    SERVICE_NAME: my-demo-ecs
+    REPOSITORY_URL: 551328564212.dkr.ecr.us-east-1.amazonaws.com/gitlab-ecs-app
+    REPOSITORY_BASE: 551328564212.dkr.ecr.us-east-1.amazonaws.com
+    TASK_DEFINITION_NAME:  gitlab-ecs-app
+    CLUSTER_NAME:  gitlab-cluster
+    SERVICE_NAME: gitlab-ecs-app
 
 include:
   - local: .gitlab/ci/*.gitlab-ci.yml
